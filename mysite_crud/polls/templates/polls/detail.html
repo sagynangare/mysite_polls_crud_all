@@ -1,0 +1,95 @@
+<!--
+<h3>{{ question.question_text }}</h3>
+<ul>
+	{% for ch in question.choice_set.all %}
+		<li>{{ ch.choice_text }}  -----  {{ch.votes}}</li>
+	{% endfor %}
+</ul>-->
+<html>
+<head>
+<style>
+
+		form {
+		  /* Center the form on the page */
+		  margin: 0 auto;
+		  width: 600px;
+		  /* Form outline */
+		  padding: 1em;
+		  border: 1px solid #CCC;
+		  border-radius: 1em;
+		  padding-top: 70px, ;
+		  margin-top: 80px;
+		  background-color: red;
+		}
+
+
+		body{
+			margin: 0;
+			padding: 0;
+			background-color: black;
+			color: white;
+		}
+		header::before{
+			background: url("https://source.unsplash.com/collection/190727/1600x900") no-repeat center center/cover;
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+			opacity: 0.3;
+		}
+		.navigation{
+			font-family: 'Bree serif', serif;
+			font-size: 20px;
+			display: flex;
+		}
+		li{
+			list-style: none;
+			padding: 20px 23px;
+			color: white;
+		}
+		.navigation li a{
+			color: white;
+
+		}
+
+</style>
+</head>
+<body>
+	<header>
+		<nav class="navbar">
+			<ul class="navigation">
+				<li class="item"><a href="{% url 'polls:index'%}">Home</a></li></li>
+				<li class="item"><a href="{% url 'polls:vote' question.id %}">Detail</a></li></li>
+				<li class="item"><a href="{% url 'polls:add_question'%}">Add Question</a></li>
+				<li class="item"><a href="{% url 'polls:add_choice' question.id%}">Add Choice</a></li>
+			</ul>
+		</nav>
+	</header>
+<form action="{% url 'polls:vote' question.id %}" method="POST">
+	{% csrf_token %}
+	<fieldset>
+		<legend><h3>{{ question.question_text }}</h3></legend>
+		{% if error_message %}
+		<p> <strong>{{error_message}}</strong> </p>
+		{% endif %}
+		<ul>
+			{% for ch in question.choice_set.all %}
+			<table>
+				<tbody>
+				<tr>
+					<td><input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ch.id}}">{{ ch.choice_text }}</td>
+					<td><label for="choice{{ forloop.counter }}" > {{ch.votes}}</label></td>
+				</tr>
+				</tbody>
+			</table>
+			{% endfor %}
+		</ul>
+		<input type="submit" value="votes">
+		
+	</fieldset>
+</form>
+</body>
+</html>
